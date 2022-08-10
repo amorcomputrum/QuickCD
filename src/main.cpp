@@ -67,10 +67,11 @@ void remove(std::string name){
  * Display Help Information
 **/
 void help(){
-	std::cout << "sudo qcd init      --> Allows QuickCD to initialize itself, MUST BE RUN IN SUDO\n"
-				 "qcd add $DIR $NAME --> Adds $DIR to QuickCD under alias of $NAME\n"
-				 "qcd list           --> Lists all alias and thier dir\n"
-				 "qcd remove $NAME   --> Remove alias($NAME) from QuickCD\n";
+	std::cout << "sudo qcd --init      --> Allows QuickCD to initialize itself, MUST BE RUN IN SUDO\n"
+				 "qcd --add $DIR $NAME --> Adds $DIR to QuickCD under alias of $NAME\n"
+				 "qcd --list           --> Lists all alias and thier dir\n"
+				 "qcd --remove $NAME   --> Remove alias($NAME) from QuickCD\n"
+				 "qcd $NAME            --> CDs into dir that uses alias($NAME)\n";
 	exit(1);
 }
 
@@ -87,9 +88,9 @@ int main(int argc, char const *argv[]){
 	std::string operation{argv[1]};
 
 	//Operations that don't require DB
-	if(operation == "init")
+	if(operation == "--init" || operation == "-i")
 		init();
-	else if(operation == "help")
+	else if(operation == "--help"|| operation == "-h")
 		help();
 	
 	//init table
@@ -108,7 +109,7 @@ int main(int argc, char const *argv[]){
 	}
 
 	//if operation is add, call add function
-	if(operation == "add"){
+	if(operation == "--add" || operation == "-a"){
 		std::string dir{argv[2]};
 		std::string name{argv[3]};
 
