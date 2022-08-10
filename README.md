@@ -15,3 +15,7 @@ This command allows you to save directories under an alias,so you can cd to it q
 ```
 
 
+## Acknowledgements
+
+ - [cpp-sqlitelib](https://github.com/yhirose/cpp-sqlitelib)
+
