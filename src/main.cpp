@@ -29,6 +29,25 @@ bool bmExists(std::string name){
 	if(count != 0) return true;
 	else return false;
 }
+/**
+ * Connects to DataBase
+**/
+void connectDB(){
+	//init table
+	try{
+		db = new sqlitelib::Sqlite("/etc/QuickCD.db");
+		db->execute(R"(
+		  CREATE TABLE IF NOT EXISTS bm (
+		    name TEXT,
+		    loc TEXT
+		  )
+		)");
+	}
+	catch(std::exception& e){
+		std::cerr << "First run: sudo qcd init\n";
+		exit(1);
+	}
+}
 
 /**
  * Add new Alias
@@ -37,6 +56,7 @@ bool bmExists(std::string name){
  * @param name The Alias to create
 **/
 void add(std::string dir, std::string name){
+	connectDB();
 	//check if name exists in database
 	if(!bmExists(name)){
 
@@ -92,24 +112,7 @@ int main(int argc, char const *argv[]){
 		init();
 	else if(operation == "--help"|| operation == "-h")
 		help();
-	
-	//init table
-	try{
-		db = new sqlitelib::Sqlite("/etc/QuickCD.db");
-		db->execute(R"(
-		  CREATE TABLE IF NOT EXISTS bm (
-		    name TEXT,
-		    loc TEXT
-		  )
-		)");
-	}
-	catch(std::exception& e){
-		std::cerr << "First run: sudo qcd init\n";
-		return 0;
-	}
-
-	//if operation is add, call add function
-	if(operation == "--add" || operation == "-a"){
+	else if(operation == "--add" || operation == "-a"){
 		std::string dir{argv[2]};
 		std::string name{argv[3]};
 
