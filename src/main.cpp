@@ -5,6 +5,13 @@
 
 sqlitelib::Sqlite* db;
 
+/**
+ * Check if Alias Alread Exists
+ * 
+ * @param name The Alias to search for
+ * 
+ * @return The result of the search
+**/
 bool bmExists(std::string name){
 	std::string sql = "SELECT COUNT(name) FROM bm WHERE name='" + name + "';";
 
@@ -22,27 +29,10 @@ bool bmExists(std::string name){
 	if(count != 0) return true;
 	else return false;
 }
-
-void add(std::string dir, std::string name){
-	//check if name exists in database
-	if(!bmExists(name)){
-
-	}else{
-		std::cerr << "name: " << name << "\nAlready exists\n";
-		exit(1);
-	}
-}
-
-int main(int argc, char const *argv[]){
-	//get what operation to call
-	std::string operation{argv[1]};
-
-	//initialize QuickCD Database
-	if(operation == "init"){
-		system("touch /etc/QuickCD.db");
-		std::cout << "QuickCD initialized\n";
-	}
-	
+/**
+ * Connects to DataBase
+**/
+void connectDB(){
 	//init table
 	try{
 		db = new sqlitelib::Sqlite("/etc/QuickCD.db");
@@ -55,11 +45,74 @@ int main(int argc, char const *argv[]){
 	}
 	catch(std::exception& e){
 		std::cerr << "First run: sudo qcd init\n";
-		return 0;
+		exit(1);
 	}
+}
 
-	//if operation is add, call add function
-	if(operation == "add"){
+/**
+ * Add new Alias
+ * 
+ * @param dir The directory to store under Alias
+ * @param name The Alias to create
+**/
+void add(std::string dir, std::string name){
+	connectDB();
+	//check if name exists in database
+	if(!bmExists(name)){
+
+	}else{
+		std::cerr << "name: " << name << "\nAlready exists\n";
+		exit(1);
+	}
+}
+
+/**
+ * List Database
+**/
+void list(){
+	std::cout << "NAME --> DIR\n";
+	//list in format above
+}
+
+/**
+ * Remove Alias from Database
+ * 
+ * @param name The name of the Alias
+**/
+void remove(std::string name){
+
+}
+
+/**
+ * Display Help Information
+**/
+void help(){
+	std::cout << "sudo qcd --init      --> Allows QuickCD to initialize itself, MUST BE RUN IN SUDO\n"
+				 "qcd --add $DIR $NAME --> Adds $DIR to QuickCD under alias of $NAME\n"
+				 "qcd --list           --> Lists all alias and thier dir\n"
+				 "qcd --remove $NAME   --> Remove alias($NAME) from QuickCD\n"
+				 "qcd $NAME            --> CDs into dir that uses alias($NAME)\n";
+	exit(1);
+}
+
+/**
+ * Initialize Database File
+**/
+void init(){
+	system("touch /etc/QuickCD.db");
+	std::cout << "QuickCD initialized\n";
+}
+
+int main(int argc, char const *argv[]){
+	//get what operation to call
+	std::string operation{argv[1]};
+
+	//Operations that don't require DB
+	if(operation == "--init" || operation == "-i")
+		init();
+	else if(operation == "--help"|| operation == "-h")
+		help();
+	else if(operation == "--add" || operation == "-a"){
 		std::string dir{argv[2]};
 		std::string name{argv[3]};
 

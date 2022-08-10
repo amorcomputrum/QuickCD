@@ -1,7 +1,7 @@
 
 # QuickCD - qcd
 
-This command allows you to save directories under an alias,so you can cd to it quicker.
+This command allows you to save directories under an alias,so you can cd to it quicker. Linux Only
 
 
 ## Usage/Examples
