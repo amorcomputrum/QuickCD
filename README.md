@@ -3,6 +3,16 @@
 
 This command allows you to save directories under an alias,so you can cd to it quicker. Linux Only
 
+## Installation
+
+**First install [xdotool](https://github.com/jordansissel/xdotool)**
+
+```bash
+git clone https://github.com/amorcomputrum/QuickCD
+cd QuickCD
+git submodule init
+sh Install.sh
+```
 
 ## Usage/Examples
 
@@ -18,4 +28,5 @@ This command allows you to save directories under an alias,so you can cd to it q
 ## Acknowledgements
 
  - [cpp-sqlitelib](https://github.com/yhirose/cpp-sqlitelib)
+ - [xdotool](https://github.com/jordansissel/xdotool)
 
