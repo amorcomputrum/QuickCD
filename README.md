@@ -11,7 +11,12 @@ This command allows you to save directories under an alias,so you can cd to it q
 git clone https://github.com/amorcomputrum/QuickCD
 cd QuickCD
 git submodule init
-sh Install.sh
+
+mkdir build
+cd build
+cmake ../.
+make
+sudo mv qcd /bin
 ```
 
 ## Usage/Examples
