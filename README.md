@@ -24,6 +24,7 @@ sudo mv qcd /bin
 ```
 [~]$ qcd set /usr/bin ubin
 [~]$ qcd ubin
+cd /usr/bin
 [/usr/bin]$ pwd
 /usr/bin
 [/usr/bin]$
