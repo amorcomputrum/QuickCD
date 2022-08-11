@@ -91,8 +91,20 @@ void add(std::string dir, std::string name){
  * List Database
 **/
 void list(){
+
+	connectDB();
+
 	std::cout << "NAME --> DIR\n";
+	std::cout << "============\n";
+
 	//list in format above
+	auto rows = db->execute<std::string, std::string>("SELECT name, loc FROM bm");
+
+	for(int i = 0; i < rows.size(); i++){
+		auto [name, loc] = rows[i];
+
+		std::cout << name << " --> " << loc << "\n";
+	}
 }
 
 /**
@@ -102,6 +114,10 @@ void list(){
 **/
 void remove(std::string name){
 
+	connectDB();
+
+	std::string sql = "DELETE FROM bm WHERE name='" + name + "'";
+	db->execute(sql.c_str());
 }
 
 /**
@@ -144,15 +160,26 @@ int main(int argc, char const *argv[]){
 		if(operation == "--help"|| operation == "-h")
 			help();
 		else if(operation == "--add" || operation == "-a"){
-			std::string dir{argv[2]};
-			std::string name{argv[3]};
-
-			add(dir,name);
+			if(argv[2] != NULL && argv[3] != NULL){
+				std::string dir{argv[2]};
+				std::string name{argv[3]};
+				add(dir,name);
+			}else
+				std::cout << "to few arguments\n";
 		}
+		else if(operation == "--remove" || operation == "-r"){
+			if(argv[2] != NULL){
+				std::string name{argv[2]};
+				remove(name);
+			}
+		}
+		else if(operation == "--list" || operation == "-l")
+			list();
 		else {
-			std::string name{argv[1]};
-
-			cd(name);
+			if(argv[1] != NULL){
+				std::string name{argv[1]};
+				cd(name);
+			}
 		}
 	}
 
