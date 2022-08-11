@@ -78,6 +78,8 @@ void add(std::string dir, std::string name){
 
 	//check if name exists in database
 	if(!bmExists(name)){
+		auto command = db->prepare("INSERT INTO bm (name, loc) VALUES (?, ?)");
+		command.execute(name.c_str(), dir.c_str());
 
 	}else{
 		std::cerr << "name: " << name << "\nAlready exists\n";
@@ -112,6 +114,27 @@ void help(){
 				 "qcd $NAME            --> CDs into dir that uses alias($NAME)\n";
 	exit(1);
 }
+/**
+ * Enter Dir from alias/name
+ * 
+ * @param name The name of the Alias
+**/
+void cd(std::string name){
+	connectDB();
+
+	if(bmExists(name)){
+		std::string sql = "SELECT loc FROM bm WHERE name='" + name + "';";
+		std::string dir = db->execute_value<std::string>(sql.c_str());
+
+		std::string python = "\"import os\nos.system(' " + dir + "');\"";
+
+		std::string command = "python -c \"exec (" + python + ")\"";
+
+		std::cout << command << std::endl;
+		system(command.c_str());
+
+	}
+}
 
 int main(int argc, char const *argv[]){
 	usr = getlogin();
@@ -128,6 +151,11 @@ int main(int argc, char const *argv[]){
 			std::string name{argv[3]};
 
 			add(dir,name);
+		}
+		else {
+			std::string name{argv[1]};
+
+			cd(name);
 		}
 	}
 
