@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.09)
 set(CMAKE_CXX_STANDARD 17)
 
 #create project
-project(qcd VERSION 0.0.1)
+project(qcd VERSION 1.0)
 
 include_directories(include)
 include_directories(cpp-sqlitelib)
