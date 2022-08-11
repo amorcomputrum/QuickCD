@@ -126,12 +126,9 @@ void cd(std::string name){
 		std::string sql = "SELECT loc FROM bm WHERE name='" + name + "';";
 		std::string dir = db->execute_value<std::string>(sql.c_str());
 
-		std::string python = "\"import os\nos.system(' " + dir + "');\"";
-
-		std::string command = "python -c \"exec (" + python + ")\"";
-
-		std::cout << command << std::endl;
+		std::string command = "xdotool type 'cd " + dir + "' > /dev/null 2>&1";
 		system(command.c_str());
+		system("xdotool key ENTER");
 
 	}
 }
