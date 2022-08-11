@@ -4,6 +4,7 @@
 #include <exception>
 #include <string>
 #include <unistd.h>
+#include <filesystem>
 
 sqlitelib::Sqlite* db;
 std::string usr;
@@ -78,8 +79,12 @@ void add(std::string dir, std::string name){
 
 	//check if name exists in database
 	if(!bmExists(name)){
+		chdir(dir.c_str());
+
+		std::string cwd = std::filesystem::current_path();
+
 		auto command = db->prepare("INSERT INTO bm (name, loc) VALUES (?, ?)");
-		command.execute(name.c_str(), dir.c_str());
+		command.execute(name.c_str(), cwd.c_str());
 
 	}else{
 		std::cerr << "name: " << name << "\nAlready exists\n";
